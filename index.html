@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GateKey</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4CAF50, #2e86de);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        h2 {
+            margin: 0 0 25px 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-size: 16px;
+            color: #a0a0a0;
+            flex-shrink: 0;
+            text-align: left;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: left;
+            margin: 0;
+            min-width: 200px;
+        }
+
+        input[type="password"], input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 5px auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        input[type="password"]:focus, input[type="email"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: #4CAF50;
+            color: white;
+            width: calc(100% - 10px);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: space-between;
+        }
+
+        .button-group button {
+            flex: 1;
+            white-space: nowrap;
+            min-width: 0;
+            padding: 12px 8px;
+            font-size: 13px;
+        }
+
+        #resetPassBtn {
+            background: #ff4757;
+        }
+
+        #passChangeBtn {
+            background: #2e86de;
+        }
+
+        #emailSetupBtn {
+            background: #715254;
+        }
+
+        #skipEmailBtn {
+            background: #ffa502;
+        }
+
+        #saveEmailBtn {
+            background: #4CAF50;
+        }
+
+        #sendOtpBtn {
+            background: #2e86de;
+        }
+
+        #verifyOtpBtn {
+            background: #4CAF50;
+        }
+
+        #resendOtpBtn {
+            background: #ffa502;
+        }
+
+        #loginBtn {
+            background: #4CAF50;
+        }
+
+        #setPassBtn {
+            background: #4CAF50;
+        }
+
+        #cancelChangeBtn {
+            background: #ffa502;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            aspect-ratio: 1;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .button-with-spinner {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .button-with-spinner:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        hr {
+            margin: 25px 0;
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #otpSection {
+            display: none;
+            text-align: center;
+        }
+
+        #otpSection h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #otpSection .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #otpSection .input-group label {
+            font-size: 16px;
+            color: #a0a0a0;
+            flex-shrink: 0;
+            text-align: left;
+        }
+
+        #otpSection .input-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            text-align: left;
+            margin: 0;
+            min-width: 200px;
+        }
+
+        #otpSection .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>GateKey</h1>
+    </div>
+
+    <div class="container">
+        <div id="setPass" class="section">
+            <h2>암호 설정</h2>
+            <div class="input-group">
+                <label for="newPass1">새로운 암호</label>
+                <input id="newPass1" type="password" placeholder="새로운 암호를 입력하세요">
+            </div>
+            <div class="input-group">
+                <label for="newPass2">암호 확인</label>
+                <input id="newPass2" type="password" placeholder="새로운 암호를 다시 입력하세요">
+            </div>
+            <button id="setPassBtn">저장</button>
+        </div>
+
+        <div id="emailSetup" class="section hidden">
+            <h2>이메일 설정</h2>
+            <div id="currentEmailText" style="margin-bottom: 15px; color: #4CAF50; display: none;"></div>
+            <div class="input-group">
+                <label for="email">이메일 주소:</label>
+                <input type="email" id="email" placeholder="이메일 주소를 입력하세요">
+            </div>
+            <div class="button-group">
+                <button id="saveEmailBtn">저장</button>
+                <button id="skipEmailBtn">건너뛰기 / 취소</button>
+                <button id="resetPassBtn">암호 초기화</button>
+            </div>
+        </div>
+
+        <div id="login" class="section hidden">
+            <h2>암호 입력</h2>
+            <div class="input-group">
+                <label for="inputPass">암호 :</label>
+                <input type="password" id="inputPass" placeholder="암호를 입력하세요">
+            </div>
+            <button id="loginBtn">암호 확인</button>
+            <button id="passChangeBtn">암호 변경</button>
+            <button id="emailSetupBtn">이메일 설정</button>
+            <hr>
+            <div class="button-with-spinner">
+                <button id="sendOtpBtn">일회용 키 전송</button>
+                <div id="otpLoadingSpinner" class="loading-spinner"></div>
+            </div>
+            <div id="otpInputGroup" class="input-group" style="display: none;">
+                <label for="otpInput">일회용 키 :</label>
+                <input id="otpInput" type="text" placeholder="이메일로 받은 6자리 숫자를 입력하세요">
+            </div>
+            <button id="verifyOtpBtn" style="display: none;">일회용 키 확인</button>
+        </div>
+
+        <div id="changePass" class="section hidden">
+            <h2>암호 변경</h2>
+            <div class="input-group">
+                <label for="currentPass">현재 암호 :</label>
+                <input type="password" id="currentPass" placeholder="현재 암호를 입력하세요">
+            </div>
+            <div class="input-group">
+                <label for="newPass">신규 암호 :</label>
+                <input type="password" id="newPass" placeholder="새 암호를 입력하세요">
+            </div>
+            <div class="input-group">
+                <label for="confirmNewPass">암호 확인 :</label>
+                <input type="password" id="confirmNewPass" placeholder="새 암호를 다시 입력하세요">
+            </div>
+            <div class="button-group">
+                <button id="confirmChangeBtn">변경</button>
+                <button id="cancelChangeBtn">이전</button>
+            </div>
+        </div>
+
+        <div id="mainApp" style="display: none">
+            <h2>메인 애플리케이션</h2>
+            <p>암호가 확인되었습니다. 이제 애플리케이션을 사용할 수 있습니다.</p>
+            <button id="logoutBtn">로그아웃</button>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+
+</html>
