@@ -4,18 +4,30 @@
   "main": "main.js",
   "scripts": {
     "start": "cross-env NODE_OPTIONS= electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "build:win": "electron-builder --win"
   },
   "devDependencies": {
     "chokidar": "^4.0.3",
     "cross-env": "^7.0.3",
     "electron": "^25.0.0",
-    "electron-builder": "^23.0.0"
+    "electron-builder": "^23.0.0",
+    "sharp": "^0.34.2",
+    "svg-to-ico": "^1.0.17"
   },
   "build": {
     "appId": "com.example.gatekey",
+    "productName": "GateKey",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "GateKey"
     }
   },
   "dependencies": {
