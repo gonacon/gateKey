@@ -8,12 +8,9 @@
     "build:win": "electron-builder --win"
   },
   "devDependencies": {
-    "chokidar": "^4.0.3",
     "cross-env": "^7.0.3",
     "electron": "^25.0.0",
-    "electron-builder": "^23.0.0",
-    "sharp": "^0.34.2",
-    "svg-to-ico": "^1.0.17"
+    "electron-builder": "^23.0.0"
   },
   "build": {
     "appId": "com.example.gatekey",
@@ -31,6 +28,7 @@
     }
   },
   "dependencies": {
+    "chokidar": "^4.0.3",
     "electron-store": "^8.2.0",
     "nodemailer": "^7.0.3"
   }
